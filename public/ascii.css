@@ -1,0 +1,22 @@
+
+.ascii-container {
+  width: fit-content;
+  background: transparent;
+  overflow: hidden;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-shrink: 0;
+}
+
+.ascii-container pre {
+  color: #dedede;
+  font-family: "Courier New", monospace;
+  font-weight: bold;
+  line-height: 1;
+  letter-spacing: 0;
+  white-space: pre;
+  margin: 0;
+  padding: 0;
+  user-select: text;
+}
