@@ -12,6 +12,8 @@ interface HistoryEntry {
 const TerminalCard = () => {
   const [input, setInput] = useState('');
   const [history, setHistory] = useState<HistoryEntry[]>([]);
+  const [commandHistory, setCommandHistory] = useState<string[]>([]);
+  const [historyIndex, setHistoryIndex] = useState<number>(-1);
   const inputRef = useRef<HTMLInputElement>(null);
   const bodyRef = useRef<HTMLDivElement>(null);
 
@@ -25,6 +27,9 @@ const TerminalCard = () => {
     const trimmed = rawCommand.trim().toLowerCase();
 
     if (!trimmed) return;
+
+    setCommandHistory((prev) => [...prev, rawCommand.trim()]);
+    setHistoryIndex(-1);
 
     if (trimmed === 'clear' || trimmed === '-clear') {
       setHistory([]);
@@ -48,8 +53,7 @@ const TerminalCard = () => {
     else if (trimmed === '-projetos' || trimmed === 'projetos') {
       output = (
             <ul className="terminal_list">
-              <li onClick={() => executeCommand('-iniative-tracker')} >-iniative-tracker</li>
-              <li onClick={() => executeCommand('-caroldle')}>-caroldle</li>
+              <li onClick={() => executeCommand('-initiative-tracker')} >-initiative-tracker</li>
               <li onClick={() => executeCommand('-univava-hackathon')} >-univava-hackathon</li>
               <li onClick={() => executeCommand('-pougos.dev')}>-pougos.dev</li>
               <li onClick={() => executeCommand('-rpg-inventory')} >-rpg-inventory</li>
@@ -57,6 +61,129 @@ const TerminalCard = () => {
       );
             
     }
+
+    else if(trimmed === '-initiative-tracker' || trimmed === 'initiative-tracker') {
+      output = (
+        <div className="projects-display">
+          <div className="project-description">
+            <p>Initiative Tracker: Um aplicativo web para controlar a iniciativa em suas campanhas de RPG!</p>
+            <a href="https://initiativetrackerrpg.netlify.app/" target="_blank" rel="noopener noreferrer" style={{ color: '#00ff9c', textDecoration: 'underline' }}>Visitar</a>
+          </div>
+          
+          <div className="project-image">
+            <img src="/img/screenshot-tracker.png" alt="Initiative Tracker" />
+          </div>
+          
+        </div>
+      )
+    
+    }
+
+    else if(trimmed === '-univava-hackathon' || trimmed === 'univava-hackathon') {
+      output = (
+        <div className="projects-display">
+          <div className="project-description">
+            <p>Univava Hackathon: Minha entrada no hackathon da Univava, onde o objetivo era criar uma solução para dados de partidas de Valorant</p>
+            <a href="https://univava-hackaton.onrender.com/" target="_blank" rel="noopener noreferrer" style={{ color: '#00ff9c', textDecoration: 'underline' }}>Visitar</a>
+          </div>
+          
+          <div className="project-image">
+            <img src="/img/screenshot-univava.png" alt="Univava Hackathon" />
+          </div>
+          
+        </div>
+      )
+    
+    }
+
+    else if(trimmed === '-pougos.dev' || trimmed === 'pougos.dev') {
+      output = (
+        <div className="projects-display">
+          <div className="project-description">
+            <p>Pougos.dev: Meu portfólio pessoal, onde apresento meus projetos e habilidades!</p>
+            <a href="https://pougos.dev/" target="_blank" rel="noopener noreferrer" style={{ color: '#00ff9c', textDecoration: 'underline' }}>Visitar</a>
+          </div>
+          
+          <div className="project-image">
+            <img src="/img/screenshot-pougos.png" alt="Pougos.dev" />
+          </div>
+          
+        </div>
+      )
+    
+    }
+
+    else if(trimmed === '-rpg-inventory' || trimmed === 'rpg-inventory') {
+      output = (
+        <div className="projects-display">
+          <div className="project-description">
+            <p>RPG Inventory: Um aplicativo web para gerenciar inventários de personagens de RPG!</p>
+            <a href="https://github.com/DouglasAKJ/inventory-rpg-frontend" target="_blank" rel="noopener noreferrer" style={{ color: '#00ff9c', textDecoration: 'underline' }}>Visitar</a>
+          </div>
+          
+          <div className="project-image">
+            <img src="/img/screenshot-inventory.png" alt="RPG Inventory" width={"250px"} height={"300px"} />
+          </div>
+          
+        </div>
+      )
+    
+    }
+
+    else if(trimmed === '-contatos' || trimmed === 'contatos') {
+      output = (
+        <div className="projects-display">
+          <div className="project-description">
+            <p>Onde você pode me encontrar e entrar em contato!</p>
+            <a href="http://linkedin.com/in/douglas-ara%C3%BAjo-38755923a/" target="_blank" rel="noopener noreferrer">
+              <img src="/img/linkedin ascii.png" alt="Linkedin" width={"120px"} height={"120px"} />
+            </a>
+            <a href="mailto:araujodouglas2013@gmail.com" target="_blank" rel="noopener noreferrer">
+              <img src="/img/email ascii.png" alt="Email" width={"120px"} height={"120px"} />
+            </a>
+          </div>
+        </div>
+      )
+    }
+
+    else if(trimmed === '-skills' || trimmed === 'skills') {
+      output = (
+        <div className="projects-display">
+          <div className="project-description">
+            <p>Habilidades técnicas e profissionais!</p>
+            <ul className="terminal_list">
+              <li>Desenvolvimento Web (Front-end e Back-end)</li>
+                <ul className="skills_sublist">
+                  <li>Java</li>
+                  <li>TypeScript</li>
+                  <li>React</li>
+                  <li>Next.js</li>
+                  <li>Nest.js</li>
+                </ul>
+              <li>Administração de Sistemas</li>
+                <ul className="skills_sublist">
+                  <li>Microsoft 365</li>
+                  <li>Active Directory</li>
+                  <li>Azure</li>
+                  <li>AWS</li>
+                </ul>
+              <li>Banco de Dados</li>
+                <ul className="skills_sublist">
+                  <li>PostgreSQL</li>
+                  <li>MySQL</li>
+                  <li>Firebase</li>
+                </ul>
+              <li>Versionamento de Código</li>
+                <ul className="skills_sublist">
+                  <li>Git</li>
+                </ul>
+              <li>Trabalho em Equipe e Comunicação</li>
+            </ul>
+          </div>
+        </div>
+      )
+    }
+
     else if (
       trimmed === '-sobre-mim' ||
       trimmed === 'sobre-mim' ||
@@ -109,6 +236,34 @@ const TerminalCard = () => {
     executeCommand(input);
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      if (commandHistory.length === 0) return;
+
+      const nextIndex =
+        historyIndex === -1
+          ? commandHistory.length - 1
+          : Math.max(0, historyIndex - 1);
+
+      setHistoryIndex(nextIndex);
+      setInput(commandHistory[nextIndex]);
+    } else if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      if (historyIndex === -1) return;
+
+      const nextIndex = historyIndex + 1;
+
+      if (nextIndex >= commandHistory.length) {
+        setHistoryIndex(-1);
+        setInput('');
+      } else {
+        setHistoryIndex(nextIndex);
+        setInput(commandHistory[nextIndex]);
+      }
+    }
+  };
+
   return (
     <StyledWrapper>
       <div className="container" onClick={() => inputRef.current?.focus()}>
@@ -150,7 +305,11 @@ const TerminalCard = () => {
                 ref={inputRef}
                 type="text"
                 value={input}
-                onChange={(e) => setInput(e.target.value)}
+                onChange={(e) => {
+                  setInput(e.target.value);
+                  setHistoryIndex(-1);
+                }}
+                onKeyDown={handleKeyDown}
                 className="terminal_input"
                 autoFocus
               />
@@ -282,6 +441,48 @@ const StyledWrapper = styled.div`
     content: "›";
     color: #ffffff;
   }
+
+  .terminal_list .skills_sublist {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    list-style: none;
+    margin: 2px 0 6px 0;
+    padding-left: 24px;
+  }
+
+  .terminal_list .skills_sublist li {
+    color: #ffffff;
+    cursor: default;
+  }
+
+  .terminal_list .skills_sublist li:hover {
+    text-decoration: none;
+  }
+
+  .projects-display {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    }
+
+    .project-description {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-right: 10px;
+    }
+
+    .project-image {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 10px;
+    width: 60%;
+    height: 60%;
+    }
 
   .sobre_mim_container {
     display: flex;
