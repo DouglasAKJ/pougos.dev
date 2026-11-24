@@ -132,16 +132,19 @@ const TerminalCard = () => {
 
     else if(trimmed === '-contatos' || trimmed === 'contatos') {
       output = (
-        <div className="projects-display">
-          <div className="project-description">
+        <div className="project_description">
             <p>Onde você pode me encontrar e entrar em contato!</p>
+            <div className="sobre_mim_container">
             <a href="http://linkedin.com/in/douglas-ara%C3%BAjo-38755923a/" target="_blank" rel="noopener noreferrer">
               <img src="/img/linkedin ascii.png" alt="Linkedin" width={"120px"} height={"120px"} />
             </a>
             <a href="mailto:araujodouglas2013@gmail.com" target="_blank" rel="noopener noreferrer">
               <img src="/img/email ascii.png" alt="Email" width={"120px"} height={"120px"} />
             </a>
-          </div>
+            <a href="https://github.com/DouglasAKJ" target="_blank" rel="noopener noreferrer">
+              <img src="/img/githubascii.png" alt="GitHub" width={"120px"} height={"120px"} />
+            </a>
+            </div>
         </div>
       )
     }
