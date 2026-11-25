@@ -314,7 +314,7 @@ const TerminalCard = () => {
 
   return (
     <StyledWrapper>
-      <div className="container" onClick={() => inputRef.current?.focus()}>
+      <div className="container">
         <div className="terminal_toolbar">
           <div className="butt">
             <button className="btn btn-color" />
@@ -337,7 +337,11 @@ const TerminalCard = () => {
             </div>
           ))}
 
-          <form className="terminal_promt" onSubmit={handleSubmit}>
+          <form
+            className="terminal_promt"
+            onSubmit={handleSubmit}
+            onClick={() => inputRef.current?.focus()}
+          >
             <span className="terminal_user">user@pougos:</span>
             <span className="terminal_location">~</span>
             <span className="terminal_bling">$</span>
