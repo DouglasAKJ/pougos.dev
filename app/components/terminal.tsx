@@ -9,6 +9,19 @@ interface HistoryEntry {
   output: React.ReactNode;
 }
 
+const AVAILABLE_COMMANDS = [
+  '-help',
+  '-sobre-mim',
+  '-projetos',
+  '-contato',
+  '-skills',
+  '-initiative-tracker',
+  '-univava-hackathon',
+  '-pougos.dev',
+  '-rpg-inventory',
+  'clear',
+];
+
 const TerminalCard = () => {
   const [input, setInput] = useState('');
   const [history, setHistory] = useState<HistoryEntry[]>([]);
@@ -42,10 +55,12 @@ const TerminalCard = () => {
     if (trimmed === '-help' || trimmed === 'help') {
       output = (
         <ul className="terminal_list">
+          <p>Digite ou clique para selecionar uma seção:</p>
           <li onClick={() => executeCommand('-sobre-mim')}>-sobre-mim</li>
           <li onClick={() => executeCommand('-projetos')}>-projetos</li>
-          <li onClick={() => executeCommand('-contato')}>-contato</li>
+          <li onClick={() => executeCommand('-contatos')}>-contatos</li>
           <li onClick={() => executeCommand('-skills')}>-skills</li>
+          <li onClick={() => executeCommand('clear')}>clear {"(para limpar o terminal)"}</li>
         </ul>
       );
     } 
@@ -130,11 +145,16 @@ const TerminalCard = () => {
     
     }
 
-    else if(trimmed === '-contatos' || trimmed === 'contatos') {
+    else if (
+      trimmed === '-contato' ||
+      trimmed === 'contato' ||
+      trimmed === '-contatos' ||
+      trimmed === 'contatos'
+    ) {
       output = (
         <div className="project_description">
             <p>Onde você pode me encontrar e entrar em contato!</p>
-            <div className="sobre_mim_container">
+            <div className="contatos_container">
             <a href="http://linkedin.com/in/douglas-ara%C3%BAjo-38755923a/" target="_blank" rel="noopener noreferrer">
               <img src="/img/linkedin ascii.png" alt="Linkedin" width={"120px"} height={"120px"} />
             </a>
@@ -240,7 +260,32 @@ const TerminalCard = () => {
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'ArrowUp') {
+    if (e.key === 'Tab') {
+      e.preventDefault();
+      const trimmed = input.trim().toLowerCase();
+      if (!trimmed) return;
+
+      const directMatches = AVAILABLE_COMMANDS.filter((cmd) =>
+        cmd.startsWith(trimmed)
+      );
+      const matches =
+        directMatches.length > 0
+          ? directMatches
+          : AVAILABLE_COMMANDS.filter((cmd) =>
+              cmd.replace(/^-/, '').startsWith(trimmed)
+            );
+
+      if (matches.length === 0) return;
+
+      const currentIndex = matches.indexOf(trimmed);
+      const nextMatch =
+        currentIndex === -1
+          ? matches[0]
+          : matches[(currentIndex + 1) % matches.length];
+
+      setInput(nextMatch);
+      setHistoryIndex(-1);
+    } else if (e.key === 'ArrowUp') {
       e.preventDefault();
       if (commandHistory.length === 0) return;
 
@@ -273,8 +318,8 @@ const TerminalCard = () => {
         <div className="terminal_toolbar">
           <div className="butt">
             <button className="btn btn-color" />
-            <button className="btn" />
-            <button className="btn" />
+            <button className="btn btn-color" />
+            <button className="btn btn-color" />
           </div>
           <p className="user">user@pougos: ~</p>
           <button className="add_tab">+</button>
@@ -325,8 +370,10 @@ const TerminalCard = () => {
 }
 
 const StyledWrapper = styled.div`
+  height: 100%;
+
   .container {
-    width: 1000px;
+    width: min(1000px, calc(100vw - 32px));
     height: 600px;
     background: #1e1e1e;
     border-radius: 10px;
@@ -487,7 +534,8 @@ const StyledWrapper = styled.div`
     height: 60%;
     }
 
-  .sobre_mim_container {
+  .sobre_mim_container,
+  .contatos_container {
     display: flex;
     flex-direction: row;
     align-items: flex-start;
@@ -559,12 +607,14 @@ const StyledWrapper = styled.div`
     display: flex;
     align-items: center;
     flex: 1;
+    min-width: 0;
     cursor: text;
   }
 
   .terminal_text {
     color: #ffffff;
-    white-space: pre;
+    white-space: pre-wrap;
+    word-break: break-word;
   }
 
   .terminal_placeholder {
@@ -579,6 +629,7 @@ const StyledWrapper = styled.div`
     inset: 0;
     width: 100%;
     height: 100%;
+    font-size: 16px;
     opacity: 0;
     border: none;
     outline: none;
@@ -604,6 +655,123 @@ const StyledWrapper = styled.div`
     }
     50% {
       opacity: 0;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .container {
+      width: 100%;
+      height: 100dvh;
+      border-radius: 0;
+      box-shadow: none;
+    }
+
+    .terminal_toolbar {
+      height: 30px;
+      padding: 0 10px;
+    }
+
+    .btn {
+      height: 10px;
+      width: 10px;
+      margin-right: 6px;
+    }
+
+    .user {
+      font-size: 12px;
+    }
+
+    .add_tab {
+      padding: 3px 8px;
+      font-size: 11px;
+    }
+
+    .terminal_body {
+      height: calc(100% - 30px);
+      padding: 10px;
+      font-size: 12px;
+      line-height: 1.4;
+      overflow-x: hidden;
+    }
+
+    .terminal_promt {
+      margin-bottom: 4px;
+    }
+
+    .terminal_promt > span {
+      margin-right: 4px;
+    }
+
+    .terminal_output {
+      padding-left: 6px;
+      overflow-wrap: anywhere;
+    }
+
+    .terminal_list {
+      gap: 6px;
+    }
+
+    .terminal_list .skills_sublist {
+      padding-left: 16px;
+    }
+
+    .terminal_placeholder {
+      font-size: 11px;
+      margin-left: 4px;
+    }
+
+    .terminal_cursor {
+      width: 6px;
+      height: 14px;
+    }
+
+    .project-description {
+      margin-right: 0;
+      gap: 6px;
+    }
+
+    .project-image {
+      width: 100%;
+      height: auto;
+    }
+
+    .project-image img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 4px;
+    }
+
+    .sobre_mim_container {
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .sobre_mim_portrait {
+      max-width: 100%;
+    }
+
+    .sobre_mim_portrait .ascii-container pre {
+      font-size: clamp(2.8px, 1.15vw, 4.5px) !important;
+    }
+
+    .sobre_mim_title {
+      font-size: 14px;
+    }
+
+    .sobre_mim_list {
+      gap: 5px;
+      padding-left: 16px;
+      font-size: 12px;
+    }
+
+    .contatos_container {
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .contatos_container img {
+      width: 72px;
+      height: 72px;
     }
   }`;
 

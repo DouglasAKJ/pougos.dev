@@ -8,7 +8,7 @@ export default function Home() {
         <div className="absolute inset-0 z-0">
           <ScrollWaveField />
         </div>
-        <div className="relative z-10 my-25">
+        <div className="relative z-10 w-full h-dvh md:w-auto md:h-auto md:my-25">
           <TerminalCard />
         </div>
       </main>
